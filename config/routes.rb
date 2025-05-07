@@ -15,10 +15,10 @@ Rails.application.routes.draw do
   root "tasks#index"
 
   # config/routes.rb
-resources :tasks do
-  member do
-    patch :toggle_complete
+  resources :tasks do
+    member do
+      patch :toggle_complete
+    end
   end
-end
 
 end
