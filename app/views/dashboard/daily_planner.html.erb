@@ -1,0 +1,65 @@
+<% content_for :title, "Daily Planner" %>
+
+<div class="container mx-auto px-4 mt-10">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Today's and Tomorrow's Tasks</h1>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- Today's Tasks -->
+    <div class="bg-white shadow-lg rounded-lg p-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Today’s Tasks</h2>
+      <% if @today_tasks.any? %>
+        <ul class="space-y-4">
+          <% @today_tasks.each do |task| %>
+            <li class="p-4 border rounded-md bg-gray-50">
+              <h3 class="font-semibold text-lg text-gray-800"><%= task.title %></h3>
+              <p class="text-sm text-gray-600 mb-2"><%= task.description %></p>
+              <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-500">Priority: <%= priority_badge(task) %></span>
+                <span class="text-sm text-gray-500">Due: <%= due_date_badge(task) %></span>
+              </div>
+              <div class="mt-4 flex gap-4">
+                <%= link_to "Edit", edit_task_path(task), class: "text-yellow-600 hover:underline text-sm" %>
+                <%= link_to "Show", task_path(task), class: "text-blue-600 hover:underline text-sm" %>
+                <%= link_to "Delete", task_path(task), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline text-sm" %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-500">You have no tasks for today.</p>
+      <% end %>
+    </div>
+
+    <!-- Tomorrow's Tasks -->
+    <div class="bg-white shadow-lg rounded-lg p-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Tomorrow’s Tasks</h2>
+      <% if @tomorrow_tasks.any? %>
+        <ul class="space-y-4">
+          <% @tomorrow_tasks.each do |task| %>
+            <li class="p-4 border rounded-md bg-gray-50">
+              <h3 class="font-semibold text-lg text-gray-800"><%= task.title %></h3>
+              <p class="text-sm text-gray-600 mb-2"><%= task.description %></p>
+              <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-500">Priority: <%= priority_badge(task) %></span>
+                <span class="text-sm text-gray-500">Due: <%= due_date_badge(task) %></span>
+              </div>
+              <div class="mt-4 flex gap-4">
+                <%= link_to "Edit", edit_task_path(task), class: "text-yellow-600 hover:underline text-sm" %>
+                <%= link_to "Show", task_path(task), class: "text-blue-600 hover:underline text-sm" %>
+                <%= link_to "Delete", task_path(task), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline text-sm" %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-500">You have no tasks for tomorrow.</p>
+      <% end %>
+    </div>
+
+  </div>
+
+  <div class="mt-6">
+    <%= link_to "Back to tasks", tasks_path, class: "inline-block bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded" %>
+  </div>
+</div>

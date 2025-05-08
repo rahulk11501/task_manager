@@ -68,13 +68,7 @@ class TasksController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  def toggle_complete
-    @task = current_user.tasks.find(params[:id])
-    @task.update(completed: !@task.completed)
-    redirect_to tasks_path
-  end
-
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task

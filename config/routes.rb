@@ -16,11 +16,9 @@ Rails.application.routes.draw do
 
   # config/routes.rb
   resources :tasks do
-    member do
-      patch :toggle_complete
-    end
-
     resources :comments, only: [:create]
   end
+
+  get "daily_planner", to: "dashboard#daily_planner", as: :daily_planner
 
 end
