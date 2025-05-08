@@ -1,44 +1,74 @@
-<div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
-  <h1 class="text-2xl font-bold mb-6 text-gray-800"><%= @task.title %></h1>
+<div class="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+  <!-- Left Column -->
+  <div class="md:col-span-2">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800"><%= @task.title %></h1>
 
-  <p class="mb-4 text-gray-700">
-    <strong class="font-semibold">Description:</strong><br>
-    <%= @task.description.presence || "No description provided." %>
-  </p>
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold mb-1 text-gray-700">Description</h2>
+      <p class="text-gray-600"><%= @task.description.presence || "No description provided." %></p>
+    </div>
 
-  <p class="mb-4 text-gray-700">
-    <strong class="font-semibold">Status:</strong>
-    <span class="<%= task_status_class(@task.status) %>">
-      <%= @task.status.titleize %>
-    </span>
-  </p>
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold mb-1 text-gray-700">Notes</h2>
+      <p class="text-gray-600"><%= @task.notes.presence || "No notes provided." %></p>
+    </div>
 
-  <p class="mb-4 text-gray-700">
-    <strong class="font-semibold">Priority:</strong>
-    <%= priority_badge(@task) %>
-  </p>
+    <!-- Comments Section -->
+    <div class="mt-8">
+      <h2 class="text-xl font-semibold mb-2">Comments</h2>
 
-  <p class="mb-6 text-gray-700">
-    <strong class="font-semibold">Due Date:</strong>
-    <%= due_date_badge(@task) %>
-  </p>
+      <% @task.comments.order(created_at: :desc).each do |comment| %>
+        <div class="bg-gray-100 rounded p-3 mb-2">
+          <p class="text-sm text-gray-700"><%= comment.content %></p>
+          <p class="text-xs text-gray-500"><%= comment.created_at.strftime("%b %d, %Y %I:%M %p") %></p>
+        </div>
+      <% end %>
 
-  <!-- Change Status Section -->
-  <div class="bg-gray-50 p-4 mb-6 rounded-lg border border-gray-200">
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Change Status</h2>
-    <%= form_with(model: @task, url: task_path(@task), method: :patch, local: true) do |f| %>
-      <div class="flex gap-4">
-        <%= f.select :status, Task.statuses.keys.map { |s| [s.titleize, s] },
-              {}, class: "rounded border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring focus:ring-blue-500" %>
-        <%= f.submit "Update Status", class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm" %>
-      </div>
-    <% end %>
+      <%= form_with(model: [@task, @task.comments.build], local: true) do |f| %>
+        <div class="mt-4">
+          <%= f.label :content, "Add Comment", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_area :content, rows: 3, class: "w-full border rounded px-3 py-2 mt-1" %>
+        </div>
+        <div class="mt-2">
+          <%= f.submit "Post Comment", class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-8 flex flex-wrap gap-4">
+      <%= link_to 'Edit', edit_task_path(@task), class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
+      <%= link_to 'Back', tasks_path, class: "bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded text-sm" %>
+      <%= link_to 'Delete', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm" %>
+    </div>
   </div>
 
-  <!-- Action Buttons -->
-  <div class="mt-6 flex gap-4">
-    <%= link_to 'Edit', edit_task_path(@task), class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
-    <%= link_to 'Back', tasks_path, class: "bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded text-sm" %>
-    <%= link_to 'Delete', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm" %>
+  <!-- Right Column (Details Sidebar) -->
+  <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-4">
+    <div>
+      <h3 class="text-sm font-semibold text-gray-600">Status</h3>
+      <p class="<%= task_status_class(@task.status) %>"><%= @task.status.titleize %></p>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold text-gray-600">Priority</h3>
+      <%= priority_badge(@task) %>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold text-gray-600">Due Date</h3>
+      <p class="text-sm text-gray-700"><%= due_date_badge(@task) %></p>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold text-gray-600 mb-1">Change Status</h3>
+      <%= form_with(model: @task, url: task_path(@task), method: :patch, local: true) do |f| %>
+        <div class="flex gap-2">
+          <%= f.select :status, Task.statuses.keys.map { |s| [s.titleize, s] },
+                {}, class: "rounded border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring focus:ring-blue-500" %>
+          <%= f.submit "✔", class: "bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded text-sm" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

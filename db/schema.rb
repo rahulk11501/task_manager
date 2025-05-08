@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_08_083132) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_08_105151) do
+  create_table "comments", force: :cascade do |t|
+    t.integer "task_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_comments_on_task_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -20,6 +28,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_08_083132) do
     t.integer "status"
     t.date "due_date"
     t.integer "priority"
+    t.text "notes"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
@@ -35,5 +44,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_08_083132) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "comments", "tasks"
   add_foreign_key "tasks", "users"
 end
