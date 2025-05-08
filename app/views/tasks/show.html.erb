@@ -12,6 +12,11 @@
       <%= @task.status.titleize %>
     </span>
   </p>
+
+  <p class="mb-2">
+    <strong>Due Date:</strong>
+    <%= due_date_badge(@task) %>
+  </p>
   
 
   <div class="mt-6 flex flex-wrap gap-4">
