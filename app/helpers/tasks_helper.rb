@@ -27,7 +27,9 @@ module TasksHelper
   end
 
   def due_date_badge(task)
-    if task.due_date && task.due_date < Date.today
+    if task.completed?
+      content_tag :span, "Completed", class: "inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full"
+    elsif task.due_date && task.due_date < Date.today
       content_tag :span, "Overdue", class: "inline-block bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded-full"
     elsif task.due_date
       task.due_date.strftime("%b %d, %Y")

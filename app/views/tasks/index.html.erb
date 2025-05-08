@@ -7,6 +7,27 @@
           class: "inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow" %>
   </div>
 
+  <% if @upcoming_tasks.any? || @overdue_tasks.any? %>
+    <div class="mb-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded shadow">
+      <h2 class="font-bold text-lg mb-2">⏰ Reminders</h2>
+
+      <% @upcoming_tasks.each do |task| %>
+        <p class="text-sm mb-1">
+          🔔 <strong><%= task.title %></strong> is due <%= task.due_date.strftime('%b %d') %>.
+          <%= link_to "View", task_path(task), class: "underline text-blue-700 ml-2" %>
+        </p>
+      <% end %>
+
+      <% @overdue_tasks.each do |task| %>
+        <p class="text-sm mb-1 text-red-700">
+          ⚠️ <strong><%= task.title %></strong> was due on <%= task.due_date.strftime('%b %d') %>!
+          <%= link_to "View", task_path(task), class: "underline text-blue-700 ml-2" %>
+        </p>
+      <% end %>
+    </div>
+<% end %>
+
+
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <% Task.statuses.keys.each do |status| %>
       <div class="bg-gray-100 rounded-lg shadow p-4">

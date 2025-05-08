@@ -1,11 +1,14 @@
-<% content_for :title, "New task" %>
+<% content_for :title, "New Task" %>
 
-<h1>New task</h1>
+<div class="container mx-auto px-4">
+  <div class="max-w-2xl mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">New Task</h1>
 
-<%= render "form", task: @task %>
+    <%= render "form", task: @task %>
 
-<br>
-
-<div>
-  <%= link_to "Back to tasks", tasks_path %>
+    <div class="mt-6 flex gap-4">
+      <%= link_to "Back to tasks", tasks_path,
+        class: "inline-block bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded" %>
+    </div>
+  </div>
 </div>

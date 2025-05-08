@@ -4,6 +4,17 @@ class TasksController < ApplicationController
   # GET /tasks or /tasks.json
   def index
     @tasks = current_user.tasks
+
+    @upcoming_tasks = @tasks.select do |task|
+      task.due_date.present? && task.due_date <= Date.today + 1.day && task.due_date >= Date.today
+    end
+    
+    @overdue_tasks = @tasks.select do |task|
+      task.due_date.present? && task.due_date < Date.today
+    end
+    
+    #TODO: Refactor this to use a background job
+    RecurringTaskGeneratorJob.perform_now(current_user.id)
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -72,6 +83,10 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.expect(task: [ :title, :description, :status, :user_id, :due_date, :priority ])
+      params.expect(
+        task: [ 
+          :title, :description, :status, :user_id, :due_date, :priority, :recurrence, :recur_until, :notes
+        ]
+      )
     end
 end
