@@ -4,31 +4,60 @@
     <title>Task Manager</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
 
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <body class="bg-gray-100 text-gray-800 font-sans p-6">
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <nav class="mb-6">
-      <% if user_signed_in? %>
-        <p class="mb-2">
-          Hello, <%= current_user.email %> | 
-          <%= link_to "Logout", 
-              destroy_user_session_path, 
-              data: { "turbo-method": :delete }, 
-              class: "text-blue-600 hover:underline" 
-          %>
-        </p>
-      <% else %>
-        <%= link_to "Login", new_user_session_path, class: "text-blue-600 hover:underline mr-4" %>
-        <%= link_to "Sign Up", new_user_registration_path, class: "text-blue-600 hover:underline" %>
-      <% end %>
-    </nav>
+  <body class="bg-gray-100 text-gray-800 font-sans">
+    <div class="flex h-screen">
 
-    <%= yield %>
+      <!-- Sidebar -->
+      <aside class="w-64 bg-white shadow-md hidden md:block">
+        <div class="p-6 text-lg font-bold text-blue-600 border-b">
+          Task Manager
+        </div>
+        <nav class="p-4 space-y-2">
+          <%= link_to "Dashboard", root_path, class: "block text-gray-700 hover:bg-gray-100 rounded px-3 py-2" %>
+          <%= link_to "All Tasks", tasks_path, class: "block text-gray-700 hover:bg-gray-100 rounded px-3 py-2" %>
+          <%= link_to "New Task", new_task_path, class: "block text-gray-700 hover:bg-gray-100 rounded px-3 py-2" %>
+        </nav>
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+          <div class="text-xl font-semibold text-gray-700">
+            <%= content_for?(:title) ? yield(:title) : "Dashboard" %>
+          </div>
+          <div>
+            <% if user_signed_in? %>
+              <span class="mr-4 text-sm text-gray-600">Hi, <%= current_user.email %></span>
+              <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-red-600 hover:underline text-sm" %>
+            <% else %>
+              <%= link_to "Login", new_user_session_path, class: "text-blue-600 hover:underline mr-4 text-sm" %>
+              <%= link_to "Sign Up", new_user_registration_path, class: "text-blue-600 hover:underline text-sm" %>
+            <% end %>
+          </div>
+        </header>
+
+        <!-- Alerts -->
+        <div class="px-6 py-2">
+          <% if notice %>
+            <p class="bg-green-100 text-green-800 px-4 py-2 rounded mb-2 text-sm"><%= notice %></p>
+          <% end %>
+          <% if alert %>
+            <p class="bg-red-100 text-red-800 px-4 py-2 rounded mb-2 text-sm"><%= alert %></p>
+          <% end %>
+        </div>
+
+        <!-- Page content -->
+        <main class="flex-1 overflow-y-auto p-6">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
   </body>
 </html>
