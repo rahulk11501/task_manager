@@ -1,34 +1,44 @@
 <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
-  <h1 class="text-2xl font-bold mb-4 text-gray-800"><%= @task.title %></h1>
+  <h1 class="text-2xl font-bold mb-6 text-gray-800"><%= @task.title %></h1>
 
   <p class="mb-4 text-gray-700">
-    <strong>Description:</strong><br>
+    <strong class="font-semibold">Description:</strong><br>
     <%= @task.description.presence || "No description provided." %>
   </p>
 
-  <p class="mb-2">
-    <strong>Status:</strong>
+  <p class="mb-4 text-gray-700">
+    <strong class="font-semibold">Status:</strong>
     <span class="<%= task_status_class(@task.status) %>">
       <%= @task.status.titleize %>
     </span>
   </p>
 
-  <p class="mb-2">
-    <strong>Due Date:</strong>
+  <p class="mb-4 text-gray-700">
+    <strong class="font-semibold">Priority:</strong>
+    <%= priority_badge(@task) %>
+  </p>
+
+  <p class="mb-6 text-gray-700">
+    <strong class="font-semibold">Due Date:</strong>
     <%= due_date_badge(@task) %>
   </p>
-  
 
-  <div class="mt-6 flex flex-wrap gap-4">
-    <%= link_to 'Edit', edit_task_path(@task), class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" %>
+  <!-- Change Status Section -->
+  <div class="bg-gray-50 p-4 mb-6 rounded-lg border border-gray-200">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Change Status</h2>
     <%= form_with(model: @task, url: task_path(@task), method: :patch, local: true) do |f| %>
-      <div class="flex gap-2">
+      <div class="flex gap-4">
         <%= f.select :status, Task.statuses.keys.map { |s| [s.titleize, s] },
               {}, class: "rounded border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring focus:ring-blue-500" %>
-        <%= f.submit "Change Status", class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm" %>
+        <%= f.submit "Update Status", class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm" %>
       </div>
     <% end %>
-    <%= link_to 'Back', tasks_path, class: "bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded" %>
-    <%= link_to 'Delete', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded" %>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mt-6 flex gap-4">
+    <%= link_to 'Edit', edit_task_path(@task), class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
+    <%= link_to 'Back', tasks_path, class: "bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded text-sm" %>
+    <%= link_to 'Delete', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm" %>
   </div>
 </div>

@@ -10,6 +10,7 @@
           <th class="px-4 py-3 text-left font-semibold">Title</th>
           <th class="px-4 py-3 text-left font-semibold">Status</th>
           <th class="px-4 py-3 text-left font-semibold">Due Date</th>
+          <th class="px-4 py-3 text-left font-semibold">Priority</th>
           <th class="px-4 py-3 text-left font-semibold">Change Status</th>
           <th class="px-4 py-3 text-left font-semibold">Actions</th>
         </tr>
@@ -27,6 +28,10 @@
 
             <td class="px-4 py-2">
               <%= due_date_badge(task) %>
+            </td>
+
+            <td class="px-4 py-2">
+              <%= priority_badge(task) %>
             </td>
 
             <td class="px-4 py-2">
