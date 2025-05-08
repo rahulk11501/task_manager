@@ -1,61 +1,49 @@
 <% content_for :title, "Your Tasks" %>
 
 <div class="max-w-6xl mx-auto mt-10 px-4">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6">Your Tasks</h1>
-
-  <div class="overflow-x-auto rounded-lg shadow">
-    <table class="min-w-full bg-white border border-gray-200 text-sm">
-      <thead class="bg-gray-100 text-gray-700">
-        <tr>
-          <th class="px-4 py-3 text-left font-semibold">Title</th>
-          <th class="px-4 py-3 text-left font-semibold">Status</th>
-          <th class="px-4 py-3 text-left font-semibold">Due Date</th>
-          <th class="px-4 py-3 text-left font-semibold">Priority</th>
-          <th class="px-4 py-3 text-left font-semibold">Change Status</th>
-          <th class="px-4 py-3 text-left font-semibold">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @tasks.each do |task| %>
-          <tr class="border-t hover:bg-gray-50">
-            <td class="px-4 py-2"><%= task.title %></td>
-
-            <td class="px-4 py-2">
-              <span class="<%= task_badge_class(task.status) %>">
-                <%= task.status.titleize %>
-              </span>
-            </td>
-
-            <td class="px-4 py-2">
-              <%= due_date_badge(task) %>
-            </td>
-
-            <td class="px-4 py-2">
-              <%= priority_badge(task) %>
-            </td>
-
-            <td class="px-4 py-2">
-              <%= form_with(model: task, url: task_path(task), method: :patch, local: true) do |f| %>
-                <div class="flex items-center gap-2">
-                  <%= f.select :status, Task.statuses.keys.map { |s| [s.titleize, s] },
-                        { selected: task.status },
-                        class: "rounded-md border-gray-300 px-2 py-1 shadow-sm focus:ring focus:ring-blue-500" %>
-                  <%= f.submit "✔", class: "text-green-600 hover:text-green-800 text-lg" %>
-                </div>
-              <% end %>
-            </td>
-
-            <td class="px-4 py-2 space-x-2">
-              <%= link_to "Show", task, class: "text-blue-600 hover:underline" %>
-              <%= link_to "Edit", edit_task_path(task), class: "text-yellow-600 hover:underline" %>
-              <%= link_to "Delete", task, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Agile Workflow Board</h1>
+    <%= link_to "➕ New Task", new_task_path,
+          class: "inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow" %>
   </div>
 
-  <%= link_to "➕ New Task", new_task_path,
-        class: "mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow" %>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <% Task.statuses.keys.each do |status| %>
+      <div class="bg-gray-100 rounded-lg shadow p-4">
+        <h2 class="text-xl font-semibold capitalize text-gray-700 mb-4 border-b pb-2"><%= status.gsub('_', ' ') %></h2>
+
+        <% @tasks.select { |task| task.status == status }.each do |task| %>
+          <div class="bg-white rounded-md shadow p-4 mb-4 border">
+            <h3 class="text-lg font-semibold text-gray-800"><%= task.title %></h3>
+            <p class="text-sm text-gray-600 mb-2"><%= truncate(task.description, length: 100) %></p>
+
+            <div class="text-sm mb-1">
+              <strong>Due:</strong> <%= due_date_badge(task) %>
+            </div>
+
+            <div class="text-sm mb-1">
+              <strong>Priority:</strong> <%= priority_badge(task) %>
+            </div>
+
+            <div class="mt-3 flex flex-wrap items-center gap-2">
+              <%= link_to "Show", task, class: "text-blue-600 hover:underline text-sm" %>
+              <%= link_to "Edit", edit_task_path(task), class: "text-yellow-600 hover:underline text-sm" %>
+              <%= link_to "Delete", task, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline text-sm" %>
+            </div>
+
+            <div class="mt-3">
+              <%= form_with(model: task, url: task_path(task), method: :patch, local: true) do |f| %>
+                <div class="flex gap-2 items-center">
+                  <%= f.select :status, Task.statuses.keys.map { |s| [s.titleize, s] },
+                        { selected: task.status },
+                        class: "rounded-md border-gray-300 px-2 py-1 shadow-sm text-sm focus:ring focus:ring-blue-500" %>
+                  <%= f.submit "Update", class: "text-xs bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>
