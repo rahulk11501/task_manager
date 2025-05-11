@@ -1,20 +1,38 @@
-<h2 class="text-2xl font-bold mb-4 text-center">Change your password</h2>
+<% provide(:title, 'Reset Password') %>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "max-w-md mx-auto bg-white p-6 rounded-lg shadow" }) do |f| %>
-  <%= hidden_field_tag :reset_password_token, params[:reset_password_token] %>
+<div class="max-w-md mx-auto mt-12 bg-white p-6 rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Reset Your Password</h2>
 
-  <div class="mb-4">
-    <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
-    <%= f.password_field :password, autocomplete: "new-password", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-blue-200" %>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <!-- Ensure token is retained -->
+    <%= f.hidden_field :reset_password_token, value: resource.reset_password_token || params[:reset_password_token] %>
+
+    <% if resource.errors.any? %>
+      <div class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+        <ul class="list-disc pl-5 text-sm">
+          <% resource.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="mb-4">
+      <%= f.label :password, "New Password", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.password_field :password, autocomplete: "new-password", class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500" %>
+    </div>
+
+    <div class="mb-6">
+      <%= f.label :password_confirmation, "Confirm New Password", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500" %>
+    </div>
+
+    <div>
+      <%= f.submit "Change my password", class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow" %>
+    </div>
+  <% end %>
+
+  <div class="mt-6 text-center">
+    <%= link_to "Back to login", new_session_path(resource_name), class: "text-blue-600 hover:underline text-sm" %>
   </div>
-
-  <div class="mb-4">
-    <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-700" %>
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-blue-200" %>
-  </div>
-
-  <div class="flex justify-between items-center">
-    <%= f.submit "Change my password", class: "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" %>
-    <%= link_to "Back", new_session_path(resource_name), class: "text-sm text-blue-500 hover:underline" %>
-  </div>
-<% end %>
+</div>
