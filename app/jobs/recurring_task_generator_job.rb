@@ -4,7 +4,7 @@ class RecurringTaskGeneratorJob < ApplicationJob
   def perform(user_id)
     # Ensure we only process tasks for the given user
     user = User.find(user_id)
-    
+
     user.tasks.where("due_date <= ? AND recurrence IS NOT NULL AND status = ?", Date.today, 2).each do |task|
       next unless task.recurring?
 

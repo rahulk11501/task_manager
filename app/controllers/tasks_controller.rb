@@ -8,12 +8,12 @@ class TasksController < ApplicationController
     @upcoming_tasks = @tasks.select do |task|
       task.due_date.present? && task.due_date <= Date.today + 1.day && task.due_date >= Date.today
     end
-    
+
     @overdue_tasks = @tasks.select do |task|
       task.due_date.present? && task.due_date < Date.today
     end
-    
-    #TODO: Refactor this to use a background job
+
+    # TODO: Refactor this to use a background job
     RecurringTaskGeneratorJob.perform_now(current_user.id)
   end
 
@@ -69,7 +69,7 @@ class TasksController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
@@ -79,7 +79,7 @@ class TasksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def task_params
       params.expect(
-        task: [ 
+        task: [
           :title, :description, :status, :user_id, :due_date, :priority, :recurrence, :recur_until, :notes
         ]
       )

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
   <head>
     <title>Task Manager</title>
     <%= csrf_meta_tags %>
@@ -8,46 +8,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= javascript_importmap_tags %>
 
-
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <body class="bg-gray-100 text-gray-800 font-sans">
+  <body class="font-sans transition-colors duration-300 bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
     <div class="flex flex-col md:flex-row min-h-screen">
 
       <!-- Mobile sidebar toggle -->
-      <div class="md:hidden bg-white shadow p-4 flex justify-between items-center">
-        <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+      <div class="md:hidden bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
+        <button id="mobile-menu-button" class="text-gray-700 dark:text-gray-300 focus:outline-none">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
+        <button id="theme-toggle" class="text-sm px-3 py-1 border rounded dark:border-gray-600">
+          Toggle Theme
+        </button>
       </div>
 
       <!-- Sidebar -->
-      <aside id="sidebar" class="w-full md:w-64 bg-white shadow-md hidden md:block">
-        <div class="p-6 text-lg font-bold text-blue-600 border-b">
+      <aside id="sidebar" class="w-full md:w-64 bg-white dark:bg-gray-800 shadow-md hidden md:block">
+        <div class="p-6 text-lg font-bold text-blue-600 dark:text-blue-400 border-b dark:border-gray-700">
           Task Manager
         </div>
         <nav class="p-4 space-y-2">
-          <%= link_to "Daily Planner", daily_planner_path, class: "block text-gray-700 hover:bg-gray-100 rounded px-3 py-2" %>
-          <%= link_to "All Tasks", tasks_path, class: "block text-gray-700 hover:bg-gray-100 rounded px-3 py-2" %>
-          <%= link_to "New Task", new_task_path, class: "block text-gray-700 hover:bg-gray-100 rounded px-3 py-2" %>
+          <%= link_to "Daily Planner", daily_planner_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
+          <%= link_to "All Tasks", tasks_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
+          <%= link_to "New Task", new_task_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
         </nav>
       </aside>
 
       <!-- Main content -->
       <div class="flex-1 flex flex-col overflow-hidden">
         <!-- Header -->
-        <header class="bg-white shadow px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div class="text-xl font-semibold text-gray-700 text-center sm:text-left">
+        <header class="bg-white dark:bg-gray-800 shadow px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div class="text-xl font-semibold text-gray-700 dark:text-gray-100 text-center sm:text-left">
             <%= content_for?(:title) ? yield(:title) : "Dashboard" %>
           </div>
           <div class="text-center sm:text-right">
             <% if user_signed_in? %>
-              <span class="mr-4 text-sm text-gray-600 block sm:inline">Hi, <%= current_user.email %></span>
+              <span class="mr-4 text-sm text-gray-600 dark:text-gray-300 block sm:inline">Hi, <%= current_user.email %></span>
               <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-red-600 hover:underline text-sm" %>
             <% else %>
               <%= link_to "Login", new_user_session_path, class: "text-blue-600 hover:underline mr-4 text-sm" %>
@@ -59,10 +61,10 @@
         <!-- Alerts -->
         <div class="px-4 py-2">
           <% if notice %>
-            <p class="bg-green-100 text-green-800 px-4 py-2 rounded mb-2 text-sm"><%= notice %></p>
+            <p class="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100 px-4 py-2 rounded mb-2 text-sm"><%= notice %></p>
           <% end %>
           <% if alert %>
-            <p class="bg-red-100 text-red-800 px-4 py-2 rounded mb-2 text-sm"><%= alert %></p>
+            <p class="bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-100 px-4 py-2 rounded mb-2 text-sm"><%= alert %></p>
           <% end %>
         </div>
 
@@ -74,14 +76,31 @@
     </div>
 
     <script>
+      // Sidebar toggle
       document.addEventListener("DOMContentLoaded", function () {
         const button = document.getElementById("mobile-menu-button");
         const sidebar = document.getElementById("sidebar");
+        const themeToggle = document.getElementById("theme-toggle");
+        const html = document.documentElement;
 
-        if (button && sidebar) {
-          button.addEventListener("click", () => {
-            sidebar.classList.toggle("hidden");
-          });
+        button?.addEventListener("click", () => {
+          sidebar.classList.toggle("hidden");
+        });
+
+        // Theme toggle logic
+        themeToggle?.addEventListener("click", () => {
+          if (html.classList.contains("dark")) {
+            html.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+          } else {
+            html.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+          }
+        });
+
+        // Load saved theme
+        if (localStorage.getItem("theme") === "dark") {
+          html.classList.add("dark");
         }
       });
     </script>

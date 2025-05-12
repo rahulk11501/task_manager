@@ -61,11 +61,11 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: 'https://task-manager-bhhs.onrender.com' }
+  config.action_mailer.default_url_options = { host: "https://task-manager-bhhs.onrender.com" }
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
   # config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
-  
+
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
