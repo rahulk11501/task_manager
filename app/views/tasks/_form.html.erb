@@ -1,42 +1,42 @@
 <%= form_with(model: task, local: true, class: "space-y-6") do |form| %>
   <div>
-    <%= form.label :title, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.text_field :title, class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" %>
+    <%= form.text_field :title, class: "block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <div>
-    <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.text_area :description, rows: 4, class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
+    <%= form.label :description, class: "block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" %>
+    <%= form.text_area :description, rows: 4, class: "block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <div>
-    <%= form.label :notes, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.text_area :notes, rows: 4, class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
+    <%= form.label :notes, class: "block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" %>
+    <%= form.text_area :notes, rows: 4, class: "block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <div>
-    <%= form.label :due_date, "Due Date", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.date_field :due_date, class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
+    <%= form.label :due_date, "Due Date", class: "block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" %>
+    <%= form.date_field :due_date, class: "block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <div>
-    <%= form.label :priority, "Priority", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.select :priority, Task.priorities.keys.map { |p| [p.titleize, p] }, {}, class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
+    <%= form.label :priority, "Priority", class: "block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" %>
+    <%= form.select :priority, Task.priorities.keys.map { |p| [p.titleize, p] }, {}, class: "block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <div>
-    <%= form.label :status, "Status", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.select :status, Task.statuses.keys.map { |s| [s.titleize, s] }, {}, class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
+    <%= form.label :status, "Status", class: "block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" %>
+    <%= form.select :status, Task.statuses.keys.map { |s| [s.titleize, s] }, {}, class: "block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <div>
-    <%= form.label :recurrence, "Repeat", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.select :recurrence, Task.recurrences.keys.map { |k| [k.titleize, k] }, {}, class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
+    <%= form.label :recurrence, "Repeat", class: "block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" %>
+    <%= form.select :recurrence, Task.recurrences.keys.map { |k| [k.titleize, k] }, {}, class: "block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <div>
-    <%= form.label :recur_until, "Repeat Until", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.date_field :recur_until, class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
+    <%= form.label :recur_until, "Repeat Until", class: "block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1" %>
+    <%= form.date_field :recur_until, class: "block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <div>

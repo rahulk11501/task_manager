@@ -5,33 +5,33 @@
   <% if @tasks.empty? %>
     <!-- No tasks: show large centered button -->
     <div class="text-center py-20">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">You have no tasks yet</h1>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6">You have no tasks yet</h1>
       <%= link_to "➕ Create Your First Task", new_task_path,
             class: "inline-block bg-blue-600 hover:bg-blue-700 text-white text-lg md:text-xl font-bold py-4 px-8 rounded-lg shadow-lg transition" %>
     </div>
   <% else %>
     <!-- Tasks exist: show heading and responsive button -->
     <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
-      <h1 class="text-3xl font-bold text-gray-800">Kanban Board</h1>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Kanban Board</h1>
       <%= link_to "➕ New Task", new_task_path,
             class: "inline-block w-full sm:w-auto text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow" %>
     </div>
 
     <% if @upcoming_tasks.any? || @overdue_tasks.any? %>
-      <div class="mb-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded shadow">
+      <div class="mb-6 p-4 bg-yellow-100 dark:bg-yellow-200/10 border-l-4 border-yellow-500 dark:border-yellow-400 text-yellow-700 dark:text-yellow-300 rounded shadow">
         <h2 class="font-bold text-lg mb-2">⏰ Reminders</h2>
 
         <% @upcoming_tasks.each do |task| %>
           <p class="text-sm mb-1">
             🔔 <strong><%= task.title %></strong> is due <%= task.due_date.strftime('%b %d') %>.
-            <%= link_to "View", task_path(task), class: "underline text-blue-700 ml-2" %>
+            <%= link_to "View", task_path(task), class: "underline text-blue-700 dark:text-blue-400 ml-2" %>
           </p>
         <% end %>
 
         <% @overdue_tasks.each do |task| %>
-          <p class="text-sm mb-1 text-red-700">
+          <p class="text-sm mb-1 text-red-700 dark:text-red-400">
             ⚠️ <strong><%= task.title %></strong> was due on <%= task.due_date.strftime('%b %d') %>!
-            <%= link_to "View", task_path(task), class: "underline text-blue-700 ml-2" %>
+            <%= link_to "View", task_path(task), class: "underline text-blue-700 dark:text-blue-400 ml-2" %>
           </p>
         <% end %>
       </div>
@@ -40,39 +40,41 @@
     <!-- Kanban board -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <% Task.statuses.keys.each do |status| %>
-        <div class="bg-gray-100 rounded-lg shadow p-4">
-          <h2 class="text-xl font-semibold capitalize text-gray-700 mb-4 border-b pb-2"><%= status.gsub('_', ' ') %></h2>
+        <div class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow p-4">
+          <h2 class="text-xl font-semibold capitalize text-gray-700 dark:text-gray-200 mb-4 border-b border-gray-300 dark:border-gray-600 pb-2">
+            <%= status.gsub('_', ' ') %>
+          </h2>
 
           <% @tasks.select { |task| task.status == status }.each do |task| %>
-            <div class="relative group bg-white rounded-md shadow hover:shadow-md transition p-4 mb-4 border cursor-pointer" onclick="window.location='<%= task_path(task) %>'">
-              <h3 class="text-lg font-semibold text-gray-800 group-hover:underline"><%= task.title %></h3>
-              <p class="text-sm text-gray-600 mb-2"><%= truncate(task.description, length: 100) %></p>
+            <div class="relative group bg-white dark:bg-gray-900 rounded-md shadow hover:shadow-md transition p-4 mb-4 border border-gray-200 dark:border-gray-700 cursor-pointer"
+                 onclick="window.location='<%= task_path(task) %>'">
+              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 group-hover:underline"><%= task.title %></h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><%= truncate(task.description, length: 100) %></p>
 
-              <div class="text-sm mb-1">
+              <div class="text-sm mb-1 text-gray-700 dark:text-gray-300">
                 <strong>Due:</strong> <%= due_date_badge(task) %>
               </div>
 
-              <div class="text-sm mb-1">
+              <div class="text-sm mb-1 text-gray-700 dark:text-gray-300">
                 <strong>Priority:</strong> <%= priority_badge(task) %>
               </div>
 
               <!-- Dropdown menu -->
               <div class="absolute top-2 right-2">
                 <div class="relative inline-block text-left">
-                  <button type="button" class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="event.stopPropagation(); this.nextElementSibling.classList.toggle('hidden')">
+                  <button type="button" class="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white focus:outline-none"
+                          onclick="event.stopPropagation(); this.nextElementSibling.classList.toggle('hidden')">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M6 10a2 2 0 114.001.001A2 2 0 016 10zm4 0a2 2 0 114.001.001A2 2 0 0110 10zm4 0a2 2 0 114.001.001A2 2 0 0114 10z"/>
                     </svg>
                   </button>
-                  <div class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow z-10">
-                    <%= link_to "Edit", edit_task_path(task), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                  <div class="hidden absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow z-10">
+                    <%= link_to "Edit", edit_task_path(task), class: "block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" %>
                     <%= link_to "Delete", task_path(task),
-                        method: :delete,
-                        data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                        class: "block px-4 py-2 text-sm text-red-600 hover:bg-gray-100" 
-                    %>
-  
-                    </div>
+                          method: :delete,
+                          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                          class: "block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700" %>
+                  </div>
                 </div>
               </div>
             </div>
