@@ -1,28 +1,53 @@
-<div class="max-w-md mx-auto mt-10 bg-white shadow-md rounded px-8 pt-6 pb-8">
-  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Sign Up</h2>
+<% content_for :title, "Sign Up" %>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <div class="mb-4">
-      <%= f.label :email, class: "block text-gray-700 font-semibold mb-2" %>
-      <%= f.email_field :email, autofocus: true, class: "w-full px-3 py-2 border rounded" %>
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4 py-12 sm:px-6 lg:px-8">
+  <div class="w-full max-w-md space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md">
+    <div>
+      <h2 class="mt-2 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+        Create your account
+      </h2>
     </div>
 
-    <div class="mb-4">
-      <%= f.label :password, class: "block text-gray-700 font-semibold mb-2" %>
-      <%= f.password_field :password, autocomplete: "new-password", class: "w-full px-3 py-2 border rounded" %>
-    </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <div class="space-y-6">
+        <!-- Email -->
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <div class="mt-1">
+            <%= f.email_field :email, autofocus: true,
+              class: "appearance-none block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition" %>
+          </div>
+        </div>
 
-    <div class="mb-6">
-      <%= f.label :password_confirmation, class: "block text-gray-700 font-semibold mb-2" %>
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full px-3 py-2 border rounded" %>
-    </div>
+        <!-- Password -->
+        <div>
+          <%= f.label :password, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <div class="mt-1">
+            <%= f.password_field :password, autocomplete: "new-password",
+              class: "appearance-none block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition" %>
+          </div>
+        </div>
 
-    <div class="mb-6">
-      <%= f.submit "Sign up", class: "w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" %>
-    </div>
-  <% end %>
+        <!-- Confirm Password -->
+        <div>
+          <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <div class="mt-1">
+            <%= f.password_field :password_confirmation, autocomplete: "new-password",
+              class: "appearance-none block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition" %>
+          </div>
+        </div>
 
-  <div class="text-center text-sm text-gray-600">
-    <%= link_to "Already have an account? Log in", new_session_path(resource_name), class: "hover:underline" %>
+        <!-- Submit -->
+        <div>
+          <%= f.submit "Sign Up",
+            class: "group relative w-full flex justify-center rounded-lg border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition" %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Footer Links -->
+    <div class="text-center text-sm text-gray-600 dark:text-gray-400 space-y-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+      <%= link_to "Already have an account? Log in", new_session_path(resource_name), class: "hover:underline" %>
+    </div>
   </div>
 </div>
