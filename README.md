@@ -46,8 +46,11 @@ cd task-manager-app
 # 2. Install dependencies
 bundle install
 
-# 3. Install JavaScript packages (if using jsbundling)
-bin/importmap
+# 3. JavaScript Setup (No Bundler Required)
+This app uses [Importmap for Rails](https://github.com/rails/importmap-rails), so no JavaScript bundler is required.
+All required JS libraries (Turbo, Stimulus, custom controllers) are pinned via `config/importmap.rb`.
+No need to run `npm install` or manage a `package.json`.
+
 
 # 4. Setup database
 bin/rails db:setup
