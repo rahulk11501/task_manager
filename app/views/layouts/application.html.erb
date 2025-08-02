@@ -29,16 +29,18 @@
       </div>
 
       <!-- Sidebar -->
-      <aside id="sidebar" class="w-full md:w-64 bg-white dark:bg-gray-800 shadow-md hidden md:block">
-        <div class="p-6 text-lg font-bold text-blue-600 dark:text-blue-400 border-b dark:border-gray-700">
-          Task Manager
-        </div>
-        <nav class="p-4 space-y-2">
-          <%= link_to "Daily Planner", daily_planner_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
-          <%= link_to "All Tasks", tasks_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
-          <%= link_to "New Task", new_task_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
-        </nav>
-      </aside>
+      <% if user_signed_in? %>
+        <aside id="sidebar" class="w-full md:w-64 bg-white dark:bg-gray-800 shadow-md hidden md:block">
+          <div class="p-6 text-lg font-bold text-blue-600 dark:text-blue-400 border-b dark:border-gray-700">
+            Task Manager
+          </div>
+          <nav class="p-4 space-y-2">
+            <%= link_to "Daily Planner", daily_planner_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
+            <%= link_to "All Tasks", tasks_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
+            <%= link_to "New Task", new_task_path, class: "block hover:bg-gray-100 dark:hover:bg-gray-700 rounded px-3 py-2" %>
+          </nav>
+        </aside>
+      <% end %>
 
       <!-- Main content -->
       <div class="flex-1 flex flex-col overflow-hidden">
